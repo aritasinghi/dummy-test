@@ -1,0 +1,2014 @@
+/* ==========================================================================
+   ReportView — exact Figma specs
+   Font: Source Sans 3 (via efi CSS variables)
+   Primary: #00B9A4 | P10: #E5F8F6
+   Secondary text: #6D828A | SC90: #232E32
+   ========================================================================== */
+
+:root {
+    --rv-primary:     #00B9A4;
+    --rv-primary-p10: #E5F8F6;
+    --rv-sc90:        #232E32;
+    --rv-sc70:        #6D828A;
+    --rv-border:      #e0e0e0;
+    --rv-border-light:#f0f0f0;
+}
+
+.rv { padding: 1rem 0 3rem; }
+
+/* ── Header ── */
+.rv__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--rv-border);
+}
+
+.rv__tabs { display: flex; }
+
+.rv__tab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--rv-sc70);
+    padding: 0.75rem 1.25rem;
+}
+
+.rv__tab--active {
+    color: var(--rv-primary);
+    border-bottom-color: var(--rv-primary);
+}
+
+.rv__download-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: transparent;
+    border: 1px solid var(--rv-border);
+    border-radius: 4px;
+    padding: 0.4rem 0.875rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    color: var(--rv-sc90);
+}
+
+.rv__download-btn:hover {
+    border-color: var(--rv-primary);
+    color: var(--rv-primary);
+}
+
+/* ════════════════════════════════════════
+   SUMMARY CARD
+   ════════════════════════════════════════ */
+.rv__summary-card {
+    background: #fff;
+    border: 1px solid var(--rv-border);
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.rv__section-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--rv-sc90);
+    margin: 0 0 1.25rem;
+}
+
+.rv__sub-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--rv-sc90);
+    margin: 1.25rem 0 0.75rem;
+}
+
+.rv__info-row {
+    display: flex;
+    gap: 2.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.rv__info-block { flex: 0 0 240px; }
+.rv__shares-block { flex: 1; }
+
+.rv__info-heading {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--rv-sc90);
+    margin: 0 0 0.5rem;
+}
+
+.rv__info-line {
+    font-size: 0.8125rem;
+    color: var(--rv-sc70);
+    margin: 0.15rem 0;
+}
+
+.rv__info-line strong { color: var(--rv-sc90); }
+
+.rv__shares-grid { display: flex; gap: 2rem; flex-wrap: wrap; }
+.rv__share-col { display: flex; flex-direction: column; min-width: 160px; }
+.rv__summary-table-wrap {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+}
+
+.rv__summary-table-wrap table {
+    min-width: 1100px;
+    table-layout: auto !important;
+    width: 100% !important;
+}
+
+/* ════════════════════════════════════════
+   MAIN LAYOUT — left filters | right sidebar
+   ════════════════════════════════════════ */
+.rv__content-layout {
+    display: grid;
+    grid-template-columns: 1fr 37rem;
+    gap: 1.5rem;
+    align-items: start;
+    margin-bottom: 1rem;
+}
+
+.rv__filters-left {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Each filter section */
+.rv__filter-section {
+    background: #fff;
+    border: 1px solid var(--rv-border);
+    border-bottom: none;
+    padding: 0.875rem 1.25rem;
+}
+
+.rv__filter-section:first-child { border-radius: 8px 8px 0 0; }
+
+.rv__filter-section--last {
+    border-bottom: 1px solid var(--rv-border) !important;
+    border-radius: 0 0 8px 8px;
+}
+
+.rv__filter-label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--rv-sc90);
+    margin: 0 0 0.625rem;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+
+.rv__info-icon {
+    font-size: 0.875rem;
+    color: var(--rv-sc70);
+    cursor: help;
+    font-weight: 400;
+}
+
+/* ── Report type — 4 in ONE row ── */
+/* Each option: width 11.125rem, height 5.625rem from Figma */
+.rv__radio-row {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.rv__radio-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    cursor: pointer;
+    /* Figma: width 11.125rem, height 5.625rem, padding 0.5rem */
+    flex: 1;
+    min-width: 0;
+    padding: 0.5rem 0;
+}
+
+.rv__radio-input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--rv-border);
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    transition: border-color 0.15s;
+}
+
+.rv__radio-input:checked { border-color: var(--rv-primary); }
+
+.rv__radio-input:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--rv-primary);
+    border-radius: 50%;
+}
+
+.rv__radio-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+/* Figma: font-size 0.875rem, color #232E32, font-weight 600 */
+.rv__radio-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--rv-sc90);
+    line-height: 1.3;
+}
+
+/* Figma: color var(--Secondary-Colors-SC70) = #6D828A, font-weight 400 */
+.rv__radio-desc {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--rv-sc70);
+    line-height: 1.3;
+}
+
+/* ── Show data — ONE horizontal row wrapping ── */
+/* Figma: each checkbox width 11.5625rem, height 1.25rem */
+.rv__checkbox-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+    row-gap: 0.5rem;
+}
+
+.rv__checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    /* Figma: width 11.5625rem */
+    width: 11.5625rem;
+    flex-shrink: 0;
+}
+
+.rv__checkbox-input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--rv-border);
+    border-radius: 3px;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.rv__checkbox-input:checked {
+    background: var(--rv-primary);
+    border-color: var(--rv-primary);
+}
+
+.rv__checkbox-input:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* Figma: color #6D828A, font-size 0.875rem, font-weight 600 */
+.rv__checkbox-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--rv-sc70);
+    line-height: 1.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── Chips ── */
+.rv__chips-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+/* ── Right sidebar — width: 37rem from Figma ── */
+.rv__sidebar {
+    position: sticky;
+    top: 1rem;
+    background: #fff;
+    border: 1px solid var(--rv-border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    width: 37rem;
+    max-width: 100%;
+}
+
+.rv__sidebar-section {
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid var(--rv-border-light);
+}
+
+.rv__sidebar-section:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Figma: font-size 0.875rem (semibold/700) */
+.rv__sidebar-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--rv-sc90);
+    margin: 0 0 0.375rem;
+}
+
+/* Figma: font-size 0.75rem, font-weight 400 */
+.rv__sidebar-text {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #000;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ════════════════════════════════════════
+   SEARCH ROW — matches 2-col grid
+   ════════════════════════════════════════ */
+.rv__search-layout {
+    display: grid;
+    grid-template-columns: 1fr 37rem;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.rv__filter-summary {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--rv-sc90);
+    margin: 0;
+}
+
+.rv__search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.rv__search-input {
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    border: 1px solid var(--rv-border);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    width: 100%;
+    outline: none;
+    color: var(--rv-sc90);
+}
+
+.rv__search-input:focus { border-color: var(--rv-primary); }
+
+.rv__search-icon {
+    position: absolute;
+    right: 0.625rem;
+    font-size: 0.875rem;
+    pointer-events: none;
+    color: var(--rv-sc70);
+}
+
+/* Legend */
+.rv__legend-layout {
+    display: grid;
+    grid-template-columns: 1fr 37rem;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.rv__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.rv__legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--rv-sc70);
+    white-space: nowrap;
+}
+
+/* ════════════════════════════════════════
+   OWNER TABLE
+   Figma table header: height 5rem, bg #E5F8F6,
+   border-bottom 3px solid primary
+   ════════════════════════════════════════ */
+.rv__table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--rv-border);
+}
+
+/* Table header row */
+.rv__table-wrap [class*="table__head"] tr,
+.rv__table-wrap thead tr {
+    background: var(--rv-primary-p10) !important;
+}
+
+/* Header cells — Figma: 0.875rem, SC90, weight 700, nowrap overflow ellipsis */
+.rv__table-wrap th,
+.rv__table-wrap [class*="headCell"] {
+    font-size: 0.5rem !important;
+    font-weight: 700 !important;
+    color: var(--rv-sc90) !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    padding: 4px 3px !important;
+    line-height: 1.2 !important;
+    vertical-align: top !important;
+    background: var(--rv-primary-p10) !important;
+}
+
+/* Body cells — data can wrap at word boundaries */
+.rv__table-wrap td,
+.rv__table-wrap [class*="bodyCell"] {
+    font-size: 0.625rem !important;
+    color: var(--rv-sc90) !important;
+    padding: 4px 3px !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+    vertical-align: top !important;
+}
+
+/* Name cell */
+.rv__name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rv__name-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+/* Figma: name is bold, underline, #232E32, 0.875rem */
+.rv__name-link {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--rv-sc90);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.rv__ssn-text {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--rv-sc70);
+    line-height: 1.4;
+}
+
+.rv__restriction {
+    display: block;
+    font-size: 0.75rem;
+    color: #e53935;
+    font-weight: 600;
+}
+
+.rv__cell-sm {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--rv-sc90);
+}
+
+.rv__cell-bold { font-weight: 700; }
+.rv__cell-muted { color: var(--rv-sc70); }
+
+/* Arvo-osuudet yhteensä — teal */
+.rv__cell-total {
+    color: var(--rv-primary);
+    font-weight: 600;
+    font-size: 0.8125rem;
+}
+
+/* Joint section */
+.rv__joint-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    margin-top: 3px;
+    font-size: 0.75rem;
+    color: var(--rv-sc70);
+}
+
+.rv__joint-label { font-weight: 600; }
+.rv__joint-names { display: flex; flex-wrap: wrap; gap: 0.2rem; }
+
+.rv__joint-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.75rem;
+    color: var(--rv-primary);
+    padding: 0;
+    text-decoration: underline;
+}
+
+.rv__joint-parent {
+    font-size: 0.75rem;
+    color: var(--rv-sc70);
+    margin-top: 2px;
+}
+
+.rv__sub-label {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--rv-sc70);
+}
+
+.rv-flag { font-size: 0.875rem; cursor: help; }
+
+/* ════════════════════════════════════════
+   PAGINATION
+   ════════════════════════════════════════ */
+.rv__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 1.25rem 0;
+}
+
+.rv__page-text {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    color: var(--rv-sc70);
+    padding: 0.25rem 0.5rem;
+    text-decoration: underline;
+}
+
+.rv__page-btn {
+    background: none;
+    border: 1px solid var(--rv-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--rv-sc70);
+    padding: 0.2rem 0.5rem;
+    line-height: 1;
+}
+
+.rv__page-btn:disabled { opacity: 0.4; cursor: default; }
+
+.rv__page-num {
+    background: none;
+    border: 1px solid var(--rv-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    padding: 0.2rem 0.5rem;
+    min-width: 2rem;
+    text-align: center;
+    color: var(--rv-sc90);
+}
+
+.rv__page-num--active {
+    background: var(--rv-primary);
+    border-color: var(--rv-primary);
+    color: #fff;
+    font-weight: 700;
+}
+
+.rv__page-ellipsis {
+    font-size: 0.875rem;
+    color: var(--rv-sc70);
+    padding: 0 0.25rem;
+}
+
+.rv__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--rv-border);
+    margin-top: 0.5rem;
+}
+
+.rv__subscription-tab {
+    padding: 2rem;
+    color: var(--rv-sc70);
+    font-size: 0.875rem;
+}
+
+/* ════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════ */
+@media (max-width: 1200px) {
+    .rv__content-layout,
+    .rv__search-layout,
+    .rv__legend-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .rv__sidebar {
+        position: static;
+        width: 100%;
+    }
+
+    .rv__radio-row { flex-wrap: wrap; }
+}
+
+/* ── Banner tabs + download ── */
+.rv__banner-tabs {
+    display: flex;
+    gap: 0;
+}
+
+.rv__banner-tab {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.7);
+    padding: 0.5rem 1rem;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.rv__banner-tab--active {
+    color: #fff;
+    border-bottom-color: #fff;
+}
+
+.rv__banner-tab:hover:not(.rv__banner-tab--active) {
+    color: rgba(255,255,255,0.9);
+}
+
+.rv__download-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.6);
+    border-radius: 4px;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.rv__download-btn:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+/* ── Sidebar height matches filter sections only ── */
+.rv__content-layout {
+    align-items: stretch !important;
+}
+
+.rv__sidebar {
+    align-self: stretch;
+    height: fit-content;
+}
+
+/* ── First column teal highlight ── */
+.rv__col--sort,
+.rv__table-wrap th:first-child {
+    color: var(--rv-primary, #00B9A4) !important;
+    border-bottom: 3px solid var(--rv-primary, #00B9A4) !important;
+}
+
+/* ── Table — no scroll ── */
+.rv__table-wrap {
+    overflow: hidden !important;
+}
+
+.rv__table-wrap table {
+    table-layout: fixed !important;
+    width: 100% !important;
+}
+
+/* ── Legend row (below search, right-aligned) ── */
+.rv__legend-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+    padding-right: 0.25rem;
+}
+
+.rv__legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--rv-sc70, #6D828A);
+    white-space: nowrap;
+}
+
+/* ── Pagination centered ── */
+.rv__pagination {
+    display: flex;
+    justify-content: center;
+    padding: 1.25rem 0;
+}
+
+/* ── Search layout — left summary, right search ── */
+.rv__search-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.rv__search-left { flex: 1; }
+
+.rv__search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 280px;
+    flex-shrink: 0;
+}
+
+/* ── Download button in Banner — white style ── */
+.rv__download-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    background: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+    border-radius: 4px !important;
+    padding: 0.375rem 0.875rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    color: #fff !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.04em !important;
+}
+
+.rv__download-btn:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ══════════════════════════════════════════════════
+   FIXES
+   ══════════════════════════════════════════════════ */
+
+/* ── Download button — white bg, teal text + icon ── */
+.rv__download-btn,
+.rv__download-btn:hover {
+    background: #fff !important;
+    color: var(--rv-primary, #00B9A4) !important;
+    border: 1px solid var(--rv-primary, #00B9A4) !important;
+}
+
+.rv__download-btn svg {
+    stroke: var(--rv-primary, #00B9A4) !important;
+    color: var(--rv-primary, #00B9A4) !important;
+}
+
+/* ── Summary table headers ── */
+.rv__summary-table-wrap th,
+.rv__summary-table-wrap [class*="headCell"] {
+    font-size: 0.5rem !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+}
+
+/* ── Summary table body — 0.725rem ── */
+.rv__summary-table-wrap td,
+.rv__summary-table-wrap [class*="bodyCell"] {
+    font-size: 0.725rem !important;
+}
+
+/* ════════════════════════════════════════
+   DOWNLOAD BUTTON — white bg, teal text
+   ════════════════════════════════════════ */
+.rv__download-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    background: #ffffff !important;
+    border: 1px solid #ffffff !important;
+    border-radius: 4px !important;
+    padding: 0.375rem 0.875rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    color: var(--rv-primary, #00B9A4) !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.04em !important;
+}
+
+.rv__download-btn svg {
+    stroke: var(--rv-primary, #00B9A4) !important;
+    color: var(--rv-primary, #00B9A4) !important;
+}
+
+.rv__download-btn:hover {
+    background: #f0fdfb !important;
+    border-color: var(--rv-primary, #00B9A4) !important;
+}
+
+/* ════════════════════════════════════════
+   SUMMARY TABLE — compact headers
+   ════════════════════════════════════════ */
+.rv__summary-table-wrap th,
+.rv__summary-table-wrap thead th,
+.rv__summary-table-wrap [class*="headCell"] {
+    font-size: 0.5rem !important;
+    font-weight: 700 !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.2 !important;
+    vertical-align: top !important;
+    padding: 4px 3px !important;
+}
+
+.rv__summary-table-wrap td,
+.rv__summary-table-wrap tbody td,
+.rv__summary-table-wrap [class*="bodyCell"] {
+    font-size: 0.725rem !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.4 !important;
+    vertical-align: top !important;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   FILTER LAYOUT OVERRIDES — exact requirements
+   ════════════════════════════════════════════════════════════════ */
+
+/* Gap between left and right = ~1.25rem */
+.rv__content-layout {
+    gap: 1.25rem !important;
+    align-items: stretch !important;
+}
+
+/* ── NO borders on filter sections ── */
+.rv__filter-section {
+    border: none !important;
+    border-bottom: none !important;
+    border-radius: 0 !important;
+    padding: 0.625rem 0.75rem !important;
+    background: transparent !important;
+}
+
+.rv__filter-section:first-child { border-radius: 0 !important; }
+.rv__filter-section--last { border: none !important; }
+
+/* Thin separator between sections */
+.rv__filter-section + .rv__filter-section {
+    border-top: 1px solid var(--rv-border-light, #f0f0f0) !important;
+}
+
+/* Section label smaller */
+.rv__filter-label {
+    font-size: 0.75rem !important;
+    margin: 0 0 0.375rem !important;
+}
+
+/* ── Radio buttons — ALL in one line, 0.625rem ── */
+.rv__radio-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.75rem !important;
+    align-items: flex-start !important;
+}
+
+.rv__radio-option {
+    flex: 1 !important;
+    gap: 0.25rem !important;
+    padding: 0 !important;
+    min-width: 0 !important;
+}
+
+.rv__radio-input {
+    width: 14px !important;
+    height: 14px !important;
+    margin-top: 1px !important;
+    flex-shrink: 0 !important;
+}
+
+.rv__radio-input:checked::after {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+.rv__radio-title {
+    font-size: 0.625rem !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+}
+
+.rv__radio-desc {
+    font-size: 0.5625rem !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+}
+
+/* Override efi internal radio label styles */
+.rv__filter-section [class*="radio"] label,
+.rv__filter-section [class*="radio"] span,
+.rv__filter-section [class*="Radio"] label,
+.rv__filter-section [class*="Radio"] span {
+    font-size: 0.625rem !important;
+}
+
+/* ── Checkboxes — all in one row, 0.625rem ── */
+.rv__checkbox-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+    align-items: center !important;
+    row-gap: 0 !important;
+}
+
+.rv__checkbox-option {
+    width: auto !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+    gap: 0.25rem !important;
+    flex-shrink: 1 !important;
+}
+
+.rv__checkbox-input {
+    width: 13px !important;
+    height: 13px !important;
+    flex-shrink: 0 !important;
+}
+
+.rv__checkbox-input:checked::after {
+    font-size: 8px !important;
+}
+
+.rv__checkbox-label {
+    font-size: 0.625rem !important;
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.2 !important;
+}
+
+/* ── Chips — all in one row, smaller ── */
+.rv__chips-row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    gap: 0.375rem !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+}
+
+.rv__chips-row::-webkit-scrollbar { display: none !important; }
+
+/* Override efi Chip internal font size */
+.rv__chips-row [class*="chip"],
+.rv__chips-row [class*="Chip"] {
+    font-size: 0.5625rem !important;
+    padding: 0.125rem 0.5rem !important;
+    height: auto !important;
+    white-space: nowrap !important;
+}
+
+/* ── RIGHT SIDEBAR — no border, max 19rem, same height ── */
+.rv__sidebar {
+    border: none !important;
+    border-radius: 0 !important;
+    max-height: 19rem !important;
+    overflow-y: auto !important;
+    padding: 0 0.75rem !important;
+    background: transparent !important;
+    gap: 0.375rem !important;
+    align-self: stretch !important;
+    scrollbar-width: thin !important;
+}
+
+.rv__sidebar-section {
+    padding-bottom: 0.5rem !important;
+    border-bottom: 1px solid var(--rv-border-light, #f0f0f0) !important;
+}
+
+.rv__sidebar-section:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+.rv__sidebar-title {
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 0.2rem !important;
+}
+
+.rv__sidebar-text {
+    font-size: 0.5625rem !important;
+    line-height: 1.4 !important;
+}
+
+/* Thin separator between left sections and right sidebar */
+.rv__content-layout {
+    border-top: 1px solid var(--rv-border-light, #f0f0f0) !important;
+    border-bottom: 1px solid var(--rv-border-light, #f0f0f0) !important;
+    padding: 0.625rem 0 !important;
+}
+
+/* ── SEARCH + LEGEND — all in one line ── */
+.rv__search-layout {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+    flex-wrap: nowrap !important;
+}
+
+.rv__filter-summary {
+    font-size: 0.6875rem !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.rv__search-box {
+    width: 180px !important;
+    flex-shrink: 0 !important;
+}
+
+.rv__search-input {
+    font-size: 0.6875rem !important;
+    padding: 0.3rem 1.75rem 0.3rem 0.5rem !important;
+}
+
+/* Legend — same line as search */
+.rv__legend-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.75rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+}
+
+.rv__legend-item {
+    font-size: 0.5625rem !important;
+    gap: 0.2rem !important;
+    white-space: nowrap !important;
+}
+
+/* Make search layout include legend in same row */
+.rv__search-and-legend {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    margin-bottom: 0.75rem !important;
+    flex-wrap: nowrap !important;
+}
+
+/* ════════════════════════════════════════
+   INFO BUTTON — small, inline with heading
+   ════════════════════════════════════════ */
+.rv__info-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    padding: 0 !important;
+    margin-left: 0.25rem !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    vertical-align: middle !important;
+    flex-shrink: 0 !important;
+}
+
+.rv__info-btn svg,
+.rv__info-btn [class*="icon"],
+.rv__info-btn [class*="Icon"] {
+    width: 14px !important;
+    height: 14px !important;
+    color: var(--rv-sc70, #6D828A) !important;
+}
+
+.rv__info-btn:hover svg,
+.rv__info-btn:hover [class*="icon"] {
+    color: var(--rv-primary, #00B9A4) !important;
+}
+
+/* ════════════════════════════════════════
+   MAIN OWNER TABLE HEADERS — NUCLEAR OVERRIDE
+   font 0.5rem, keep-all, no hyphens
+   ════════════════════════════════════════ */
+.rv__table-wrap .rv__th,
+.rv__table-wrap th {
+    font-size: 0.5rem !important;
+    font-weight: 700 !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.2 !important;
+    vertical-align: top !important;
+    padding: 4px 3px !important;
+}
+
+/* Table body cells */
+.rv__table-wrap td {
+    font-size: 0.625rem !important;
+    vertical-align: top !important;
+    padding: 0.375rem !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+}
+
+/* ─── Shares vertical ─── */
+.rv__shares-vertical {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+}
+
+.rv__cell-block {
+    display: block !important;
+    width: 100% !important;
+    line-height: 1.5 !important;
+}
+
+/* ─── Table layout — fixed so inline widths are respected ─── */
+.rv__table-wrap table {
+    table-layout: fixed !important;
+    width: 100% !important;
+    min-width: unset !important;
+}
+
+.rv__table-wrap th,
+.rv__table-wrap td {
+    min-width: 0 !important;
+    max-width: none !important;
+}
+
+/* Remove rv__actions if any remain */
+.rv__actions { display: none !important; }
+
+/* ════════════════════════════════════════════════════════════════════════
+   NUCLEAR OVERRIDE — Applied last, beats library CSS on all th elements.
+   0.5rem font, keep-all (no mid-word breaks), no hyphens.
+   DO NOT add anything after this block.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* Main owner table header cells */
+.rv__table-wrap th,
+.rv__table-wrap thead th,
+.rv__table-wrap [class*="headCell"],
+.rv__table-wrap [class*="HeadCell"] {
+    font-size: 0.5rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    -ms-hyphens: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.25 !important;
+    vertical-align: top !important;
+    padding: 5px 4px !important;
+}
+
+/* Summary table header cells */
+.rv__summary-table-wrap th,
+.rv__summary-table-wrap thead th,
+.rv__summary-table-wrap [class*="headCell"],
+.rv__summary-table-wrap [class*="HeadCell"] {
+    font-size: 0.5rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    -ms-hyphens: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    line-height: 1.25 !important;
+    vertical-align: top !important;
+    padding: 5px 4px !important;
+}
+
+/* Both table body cells */
+.rv__table-wrap td,
+.rv__table-wrap tbody td,
+.rv__summary-table-wrap td,
+.rv__summary-table-wrap tbody td {
+    font-size: 0.625rem !important;
+    padding: 4px 4px !important;
+    vertical-align: top !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+}
+
+/* ─── SecondaryText inside HeadCell — must be SMALLER than primary text ─── */
+.rv__table-wrap th [class*="secondaryText"],
+.rv__table-wrap th [class*="secondary-text"],
+.rv__table-wrap th [class*="secondary_text"],
+.rv__table-wrap th [class*="SecondaryText"],
+.rv__table-wrap thead [class*="secondary"],
+.rv__summary-table-wrap th [class*="secondary"],
+.rv__table-wrap th span:not(:first-child) {
+    font-size: 0.45rem !important;
+    font-weight: 600 !important;
+    color: var(--rv-sc70, #6D828A) !important;
+    line-height: 1.2 !important;
+    display: block !important;
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   LAYOUT NUCLEAR OVERRIDE — 80/20 grid, radio row, checkbox labels
+   Applied absolutely last. Fixes sidebar fixed-width & truncation.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── True 80/20 grid — sidebar is 20%, filters get 80% ── */
+.rv__content-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 1fr) !important;
+    gap: 1.25rem !important;
+    align-items: start !important;
+    margin-bottom: 1rem !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    padding: 0 !important;
+}
+
+/* ── Sidebar — no fixed width, fills the 20% grid column ── */
+.rv__sidebar {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    position: sticky !important;
+    top: 1rem !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    padding: 0 0.5rem !important;
+    gap: 0.5rem !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+}
+
+.rv__sidebar-section {
+    padding-bottom: 0.5rem !important;
+    border-bottom: 1px solid var(--rv-border-light, #e8e8e8) !important;
+}
+
+.rv__sidebar-section:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+}
+
+.rv__sidebar-title {
+    font-size: 0.625rem !important;
+    font-weight: 700 !important;
+    color: var(--rv-sc90) !important;
+    margin: 0 0 0.2rem !important;
+}
+
+.rv__sidebar-text {
+    font-size: 0.5rem !important;
+    line-height: 1.4 !important;
+    color: #333 !important;
+}
+
+/* ── Filters left — fills 80% ── */
+.rv__filters-left {
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+/* ── Filter section — compact padding ── */
+.rv__filter-section {
+    padding: 0.5rem 0.75rem !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+.rv__filter-section + .rv__filter-section {
+    border-top: 1px solid var(--rv-border-light, #f0f0f0) !important;
+}
+
+.rv__filter-label {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 0.375rem !important;
+}
+
+/* ── Radio row — all 4 in ONE horizontal line ── */
+.rv__radio-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+    align-items: flex-start !important;
+}
+
+.rv__radio-option {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    gap: 0.25rem !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    cursor: pointer !important;
+}
+
+.rv__radio-input {
+    width: 13px !important;
+    height: 13px !important;
+    flex-shrink: 0 !important;
+    margin-top: 1px !important;
+}
+
+.rv__radio-content {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+}
+
+.rv__radio-title {
+    font-size: 0.625rem !important;
+    font-weight: 600 !important;
+    color: var(--rv-sc90) !important;
+    line-height: 1.3 !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+}
+
+.rv__radio-desc {
+    font-size: 0.5rem !important;
+    color: var(--rv-sc70, #6D828A) !important;
+    line-height: 1.2 !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+}
+
+/* ── Checkboxes — all 5 in ONE row, labels wrap (no ellipsis) ── */
+.rv__checkbox-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.5rem !important;
+    align-items: flex-start !important;
+}
+
+.rv__checkbox-option {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    gap: 0.25rem !important;
+    display: flex !important;
+    align-items: flex-start !important;
+}
+
+.rv__checkbox-input {
+    width: 13px !important;
+    height: 13px !important;
+    flex-shrink: 0 !important;
+    margin-top: 1px !important;
+}
+
+.rv__checkbox-label {
+    font-size: 0.5625rem !important;
+    font-weight: 600 !important;
+    color: var(--rv-sc70, #6D828A) !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;       /* allow wrapping */
+    overflow: visible !important;         /* no clip */
+    text-overflow: unset !important;      /* no ellipsis */
+    word-break: break-word !important;
+}
+
+/* ── Chips — wrap to 2 rows if needed ── */
+.rv__chips-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.375rem !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FINAL NUCLEAR OVERRIDES — Beat component library. DO NOT ADD AFTER THIS.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Page wrapper ── */
+.rv__page { display: flex; flex-direction: column; min-height: 100vh; }
+
+/* ── 80/20 grid — immune to library CSS ── */
+.rv__content-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 1fr) !important;
+    gap: 1.5rem !important;
+    align-items: start !important;
+    width: 100% !important;
+    margin: 1rem 0 !important;
+}
+
+.rv__filters-left { min-width: 0 !important; }
+
+/* ── Sidebar ── */
+.rv__sidebar {
+    width: 100% !important;
+    min-width: 0 !important;
+    position: sticky !important;
+    top: 1rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+}
+
+.rv__sidebar-section {
+    padding: 0.625rem 0 !important;
+    border-bottom: 1px solid #eee !important;
+}
+
+.rv__sidebar-section:last-child { border-bottom: none !important; }
+
+.rv__sidebar-title {
+    font-size: 0.6875rem !important;
+    font-weight: 700 !important;
+    color: #232E32 !important;
+    margin: 0 0 0.25rem !important;
+}
+
+.rv__sidebar-subtitle {
+    font-size: 0.6875rem !important;
+    font-weight: 600 !important;
+    color: #232E32 !important;
+    margin: 0 0 0.25rem !important;
+}
+
+.rv__sidebar-text {
+    font-size: 0.625rem !important;
+    line-height: 1.5 !important;
+    color: #444 !important;
+    margin: 0 !important;
+}
+
+.rv__sidebar-text--mt { margin-top: 0.375rem !important; }
+
+/* ── Filter label ── */
+.rv__filter-label {
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+    color: #232E32 !important;
+    margin: 0 0 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+}
+
+/* ── Filter section spacing ── */
+.rv__filter-section {
+    padding: 0.75rem 0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+.rv__filter-section:last-child { border-bottom: none !important; }
+
+/* ── Radio row — 4 options in ONE horizontal line ── */
+.rv__radio-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 1rem !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+}
+
+.rv__radio-option {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 0.375rem !important;
+    cursor: pointer !important;
+}
+
+.rv__radio-input {
+    width: 14px !important;
+    height: 14px !important;
+    flex-shrink: 0 !important;
+    margin-top: 1px !important;
+    accent-color: #00B9A4 !important;
+    cursor: pointer !important;
+}
+
+.rv__radio-content {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+}
+
+.rv__radio-title {
+    font-size: 0.6875rem !important;
+    font-weight: 600 !important;
+    color: #232E32 !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+}
+
+.rv__radio-desc {
+    font-size: 0.5625rem !important;
+    color: #6D828A !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+}
+
+/* ── Checkbox row — 5 options in ONE line ── */
+.rv__checkbox-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0.75rem !important;
+    align-items: flex-start !important;
+}
+
+.rv__checkbox-option {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 0.375rem !important;
+    cursor: pointer !important;
+}
+
+.rv__checkbox-input {
+    width: 14px !important;
+    height: 14px !important;
+    flex-shrink: 0 !important;
+    margin-top: 1px !important;
+    accent-color: #00B9A4 !important;
+    cursor: pointer !important;
+}
+
+.rv__checkbox-label {
+    font-size: 0.5625rem !important;
+    font-weight: 600 !important;
+    color: #232E32 !important;
+    line-height: 1.3 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
+    word-break: normal !important;
+}
+
+/* ── Chips ── */
+.rv__chips-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 0.375rem !important;
+}
+
+/* ── Search LEFT + Legend RIGHT — one row ── */
+.rv__search-legend-row {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    gap: 1rem !important;
+    margin: 0.75rem 0 0.5rem !important;
+    flex-wrap: wrap !important;
+}
+
+.rv__search-left {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.375rem !important;
+    min-width: 0 !important;
+}
+
+.rv__filter-summary {
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: #232E32 !important;
+    margin: 0 !important;
+}
+
+.rv__search-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    padding: 0.375rem 0.625rem !important;
+    background: #fff !important;
+    width: 240px !important;
+}
+
+.rv__search-input {
+    border: none !important;
+    outline: none !important;
+    font-size: 0.8125rem !important;
+    flex: 1 !important;
+    background: transparent !important;
+    color: #232E32 !important;
+}
+
+.rv__search-icon {
+    color: #6D828A !important;
+    flex-shrink: 0 !important;
+}
+
+/* ── Legend row (RIGHT side) ── */
+.rv__legend-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    flex-shrink: 0 !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+}
+
+.rv__legend-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    font-size: 0.6875rem !important;
+    color: #444 !important;
+    white-space: nowrap !important;
+}
+
+/* Legend icons matching Figma (SVG-based, not emoji) */
+.rv__legend-icon {
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
+}
+
+.rv__legend-icon--nondisclosure { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%23666' stroke-width='2'/%3E%3Cline x1='4.9' y1='4.9' x2='19.1' y2='19.1' stroke='%23666' stroke-width='2'/%3E%3C/svg%3E") center/contain no-repeat !important; }
+.rv__legend-icon--joint         { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71' fill='none' stroke='%23666' stroke-width='2'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71' fill='none' stroke='%23666' stroke-width='2'/%3E%3C/svg%3E") center/contain no-repeat !important; }
+.rv__legend-icon--nominee       { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' fill='none' stroke='%23666' stroke-width='2'/%3E%3Cline x1='8' y1='12' x2='16' y2='12' stroke='%23666' stroke-width='2'/%3E%3C/svg%3E") center/contain no-repeat !important; }
+.rv__legend-icon--bank          { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3' fill='none' stroke='%23666' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat !important; }
+
+/* ── Info button ── */
+.rv__info-btn {
+    padding: 0 !important;
+    background: none !important;
+    border: none !important;
+    cursor: pointer !important;
+    color: #6D828A !important;
+    line-height: 1 !important;
+}
+
+/* ── Loading ── */
+.rv__loading {
+    padding: 2rem !important;
+    text-align: center !important;
+    color: #6D828A !important;
+}
+
+/* ── Pagination ── */
+.rv__pagination {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 1rem !important;
+    padding: 1rem 0 !important;
+}
+
+.rv__pagination-info {
+    font-size: 0.8125rem !important;
+    color: #6D828A !important;
+}
+
+/* ── Download button ── */
+.rv__download-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    padding: 0.375rem 0.875rem !important;
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    border: 1px solid currentColor !important;
+    border-radius: 4px !important;
+    background: transparent !important;
+    cursor: pointer !important;
+    color: inherit !important;
+}
+
+/* ── Summary card ── */
+.rv__summary-card {
+    background: #fff !important;
+    border: 1px solid #e8e8e8 !important;
+    border-radius: 4px !important;
+    padding: 1rem 1.25rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+/* ── Info row ── */
+.rv__info-row {
+    display: flex !important;
+    gap: 2rem !important;
+    margin-bottom: 1rem !important;
+    flex-wrap: wrap !important;
+}
+
+.rv__info-block { flex: 0 0 auto; }
+.rv__shares-block { flex: 1; }
+
+.rv__shares-grid {
+    display: flex !important;
+    gap: 2rem !important;
+    flex-wrap: wrap !important;
+}
+
+.rv__info-heading {
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    color: #232E32 !important;
+    margin: 0 0 0.375rem !important;
+}
+
+.rv__info-line {
+    font-size: 0.75rem !important;
+    color: #232E32 !important;
+    margin: 0.125rem 0 !important;
+}
+
+.rv__section-title {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    color: #232E32 !important;
+    margin: 0 0 0.75rem !important;
+}
+
+.rv__sub-title {
+    font-size: 0.875rem !important;
+    font-weight: 700 !important;
+    color: #232E32 !important;
+    margin: 0.75rem 0 0.5rem !important;
+}
+
+/* ── Loader wrapper ── */
+.rv__loader-wrap {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 3rem 0 !important;
+    width: 100% !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   FINAL HEADER FIX — Matches Figma exactly
+   PRIMARY cols (1-3): teal #E5F8F6 background
+   DATA cols (4+):     white background
+   NO character-splitting — word-break: keep-all enforced
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Primary columns (Name, Address, Book-entry type) ── */
+.rv__table-wrap th.rv__th--primary,
+.rv__table-wrap thead th.rv__th--primary,
+.rv__table-wrap .rv__th--primary[class*="headCell"],
+.rv__table-wrap .rv__th--primary[class*="HeadCell"] {
+    background-color: #E5F8F6 !important;
+    background: #E5F8F6 !important;
+}
+
+/* ── Data columns (4+): white background ── */
+.rv__table-wrap th.rv__th--data,
+.rv__table-wrap thead th.rv__th--data,
+.rv__table-wrap .rv__th--data[class*="headCell"],
+.rv__table-wrap .rv__th--data[class*="HeadCell"] {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+}
+
+/* ── Sort column: teal text + teal bottom border ── */
+.rv__table-wrap th.rv__th--sort,
+.rv__table-wrap th.rv__th--sort [class*="headCell"],
+.rv__table-wrap th.rv__th--sort [class*="HeadCell"] {
+    color: #00B9A4 !important;
+    border-bottom: 2px solid #00B9A4 !important;
+}
+
+/* ── ALL th: fix word-break once and for all ── */
+/* Using attribute wildcard to catch ALL possible library class names */
+.rv__table-wrap th,
+.rv__table-wrap thead th,
+.rv__table-wrap th[class],
+.rv__table-wrap th[class*="head"],
+.rv__table-wrap th[class*="Head"],
+.rv__table-wrap th[class*="cell"],
+.rv__table-wrap th[class*="Cell"],
+.rv__table-wrap [role="columnheader"] {
+    font-size: 0.5625rem !important;    /* 9px — readable but compact */
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    padding: 6px 5px !important;
+    vertical-align: top !important;
+    white-space: normal !important;
+    word-break: keep-all !important;    /* NEVER break mid-word */
+    overflow-wrap: normal !important;   /* NEVER break mid-word */
+    hyphens: none !important;
+    -webkit-hyphens: none !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+}
+
+/* ── SecondaryText inside headers: smaller than primary ── */
+.rv__table-wrap th [class*="secondary"],
+.rv__table-wrap th [class*="Secondary"],
+.rv__table-wrap th span + span,
+.rv__table-wrap [role="columnheader"] [class*="secondary"],
+.rv__table-wrap [role="columnheader"] [class*="Secondary"] {
+    font-size: 0.5rem !important;       /* 8px — slightly smaller */
+    font-weight: 600 !important;
+    color: #6D828A !important;
+    display: block !important;
+    line-height: 1.2 !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+}
+
+/* ── Table layout: auto so columns size to content ── */
+.rv__table-wrap table {
+    table-layout: auto !important;
+    width: 100% !important;
+    min-width: 900px !important;
+    border-collapse: collapse !important;
+}
+
+/* ── Body cells: word-break allowed for data ── */
+.rv__table-wrap td,
+.rv__table-wrap tbody td,
+.rv__table-wrap td[class],
+.rv__table-wrap [role="cell"] {
+    font-size: 0.6875rem !important;
+    padding: 5px 5px !important;
+    vertical-align: top !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TARGETED FIXES — sidebar scroll, search+legend row, chip counts
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Sidebar: sticky + internal scroll so it never stretches layout ── */
+.rv__sidebar {
+    position: sticky !important;
+    top: 1rem !important;
+    align-self: start !important;
+    max-height: calc(100vh - 180px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    /* thin scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+}
+
+.rv__sidebar::-webkit-scrollbar { width: 4px; }
+.rv__sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+
+/* ── Left filter section: never taller than its content ── */
+.rv__filters-left {
+    align-self: start !important;
+}
+
+/* ── Grid: both columns start at top, sidebar never forces left to stretch ── */
+.rv__content-layout {
+    align-items: start !important;
+}
+
+/* ── Search bar + legend: ONE horizontal line ── */
+.rv__search-legend-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    flex-wrap: nowrap !important;
+    margin: 0.75rem 0 0.5rem !important;
+    min-height: 40px !important;
+}
+
+/* Left side: filter summary text + search box side by side */
+.rv__search-left {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.75rem !important;
+    flex: 0 1 auto !important;
+    min-width: 0 !important;
+}
+
+.rv__filter-summary {
+    font-size: 0.8125rem !important;
+    font-weight: 600 !important;
+    color: #232E32 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+}
+
+.rv__search-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.375rem !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    padding: 0.25rem 0.625rem !important;
+    background: #fff !important;
+    width: 220px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Right side: legend icons flush right, never wraps */
+.rv__legend-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.875rem !important;
+    flex-shrink: 0 !important;
+    flex-wrap: nowrap !important;
+}
+
+/* ── Summary table: horizontal scroll ONLY ── */
+.rv__summary-table-wrap {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    max-height: none !important;
+}
