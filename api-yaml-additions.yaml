@@ -1,0 +1,293 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# ADD THESE TWO BLOCKS UNDER paths: in api.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+  /api/reports/shareholder/{reportId}:
+    get:
+      summary: Get report static data (issuer info, share classes, summary table)
+      operationId: getReportDetail
+      tags:
+        - ShareholderReport
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          example: 42
+      responses:
+        '200':
+          description: Report static data loaded successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  issuerName:
+                    type: string
+                    example: "Euroflex Oyj"
+                  reportName:
+                    type: string
+                    example: "Issuer Shareholder List Report"
+                  situationDate:
+                    type: string
+                    example: "13.3.2026"
+                  issuerId:
+                    type: integer
+                    format: int64
+                    example: 800001
+                  shareClasses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          example: "EUROFLEX A"
+                        isinCode:
+                          type: string
+                          example: "FI21049685930"
+                        abbreviation:
+                          type: string
+                          example: "EUROFLA"
+                  summaryRows:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        shareClassCode:
+                          type: string
+                          example: "EUROFLA"
+                        ownerCount:
+                          type: integer
+                          example: 1300
+                        jointOwnerCount:
+                          type: integer
+                          example: 12
+                        votesConferred:
+                          type: integer
+                          example: 1006970
+                        votesPercentage:
+                          type: string
+                          example: "50.3 %"
+                        totalVotes:
+                          type: integer
+                          example: 2000000
+                        inShareholderList:
+                          type: integer
+                          example: 503488
+                        inWaitingList:
+                          type: integer
+                          example: 5000
+                        nomineeRegistered:
+                          type: integer
+                          example: 10000
+                        inJointAccount:
+                          type: integer
+                          example: 481512
+                        issuedAmount:
+                          type: integer
+                          example: 1000000
+                        isBold:
+                          type: boolean
+                          example: false
+                        isTotal:
+                          type: boolean
+                          example: false
+        '404':
+          description: Report not found
+
+  /api/reports/shareholder/{reportId}/owners:
+    get:
+      summary: Get paginated shareholder owner list
+      operationId: getShareholderOwners
+      tags:
+        - ShareholderReport
+      parameters:
+        - name: reportId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+          example: 42
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+          example: 1
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 13
+          example: 13
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+          example: "thomas"
+        - name: directFilter
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: nomineeFilter
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: companyFilter
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: financialFilter
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: householdFilter
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: Paginated owner list returned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  owners:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int64
+                          example: 1
+                        fullName:
+                          type: string
+                          example: "Thomas-Peter Along-lastname"
+                        personalId:
+                          type: string
+                          example: "120370-8902A"
+                        dateOfBirth:
+                          type: string
+                          nullable: true
+                          example: "12.03.1970"
+                        customerRestriction:
+                          type: string
+                          nullable: true
+                          example: null
+                        isNonDisclosure:
+                          type: boolean
+                          example: false
+                        isJointOwner:
+                          type: boolean
+                          example: false
+                        isNomineeRegistered:
+                          type: boolean
+                          example: false
+                        isCustodianBank:
+                          type: boolean
+                          example: false
+                        isCompany:
+                          type: boolean
+                          example: false
+                        isJointSubRow:
+                          type: boolean
+                          example: false
+                        jointParentName:
+                          type: string
+                          nullable: true
+                          example: null
+                        municipality:
+                          type: string
+                          example: "Espoo"
+                        streetAddress:
+                          type: string
+                          example: "Arvo-osuuskuja 212"
+                        postAddress:
+                          type: string
+                          example: "00550 Espoo"
+                        residenceCountry:
+                          type: string
+                          example: "Espoo, Finland"
+                        situationDate:
+                          type: string
+                          nullable: true
+                          example: "31/12/2024"
+                        sectorName:
+                          type: string
+                          example: "Public companies excl. housing companies"
+                        paymentInfo:
+                          type: string
+                          example: "FI1234567787788"
+                        taxInfo:
+                          type: string
+                          example: "TBC"
+                        bookEntries:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              shareClassName:
+                                type: string
+                                example: "EUROFLEX A"
+                              custodianName:
+                                type: string
+                                example: "OP"
+                              numberOfEntries:
+                                type: string
+                                example: "30 300"
+                              percentageCombined:
+                                type: string
+                                example: "3.03000"
+                              numberOfVotes:
+                                type: string
+                                example: "60 900"
+                              votingRightsPercentage:
+                                type: string
+                                example: "2.54000"
+                              isTotal:
+                                type: boolean
+                                example: false
+                        jointOwners:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                example: "Tiina Ollila"
+                              isLinkable:
+                                type: boolean
+                                example: false
+                  totalCount:
+                    type: integer
+                    example: 25
+                  totalPages:
+                    type: integer
+                    example: 2
+                  page:
+                    type: integer
+                    example: 1
+                  pageSize:
+                    type: integer
+                    example: 13
+        '404':
+          description: Report not found
