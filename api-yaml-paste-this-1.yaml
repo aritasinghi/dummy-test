@@ -1,0 +1,133 @@
+  /api/reports/order/:
+    post:
+      summary: Order a report with specified parameters
+      operationId: orderReport
+      tags:
+        - ReportOrders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - reportTypeId
+                - businessCode
+                - userId
+                - orderTypeCd
+                - reportFormatCd
+                - instruments
+              properties:
+                reportTypeId:
+                  type: integer
+                  example: 1
+                businessCode:
+                  type: string
+                  example: "1061446-0"
+                userId:
+                  type: string
+                  example: "Alice"
+                reportDate:
+                  type: string
+                  example: "2024-01-01"
+                referenceCode:
+                  type: string
+                  example: "REF123"
+                orderTypeCd:
+                  type: string
+                  enum:
+                    - ONE_TIME
+                    - RECURRING
+                  example: "RECURRING"
+                reportFormatCd:
+                  type: string
+                  enum:
+                    - FULL
+                    - SUMMARY
+                  example: "FULL"
+                reportFrequencyCd:
+                  type: string
+                  enum:
+                    - DAILY
+                    - WEEKLY
+                    - MONTHLY
+                    - YEARLY
+                  example: "MONTHLY"
+                orderStartDt:
+                  type: string
+                  example: "2026-10-01"
+                weeklyIntervalNbr:
+                  type: integer
+                  example: 1
+                weeklyDayOfWeekNbr:
+                  type: integer
+                  example: 1
+                monthlyIntervalNbr:
+                  type: integer
+                  example: 3
+                monthlyDayOfMonthNbr:
+                  type: integer
+                  example: 1
+                monthlyLastDayInd:
+                  type: integer
+                  example: 0
+                yearlyMonthNbr:
+                  type: integer
+                  example: 10
+                yearlyDayNbr:
+                  type: integer
+                  example: 1
+                instruments:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      securityCode:
+                        type: integer
+                        format: int64
+                        example: 900001
+                      bookEntryTypeCd:
+                        type: string
+                        enum:
+                          - REGULAR
+                          - DISCONTINUED
+                        example: "REGULAR"
+            example:
+              reportTypeId: 1
+              businessCode: "1061446-0"
+              userId: "Alice"
+              reportDate: "2026-06-18"
+              referenceCode: "REF123"
+              orderTypeCd: "RECURRING"
+              reportFormatCd: "FULL"
+              reportFrequencyCd: "MONTHLY"
+              orderStartDt: "2026-10-01"
+              weeklyIntervalNbr: 1
+              weeklyDayOfWeekNbr: 1
+              monthlyIntervalNbr: 3
+              monthlyDayOfMonthNbr: 1
+              monthlyLastDayInd: 0
+              yearlyMonthNbr: 10
+              yearlyDayNbr: 1
+              instruments:
+                - securityCode: 900001
+                  bookEntryTypeCd: "REGULAR"
+                - securityCode: 900002
+                  bookEntryTypeCd: "REGULAR"
+                - securityCode: 900010
+                  bookEntryTypeCd: "DISCONTINUED"
+      responses:
+        '200':
+          description: Report ordered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reportOrderId:
+                    type: integer
+                    example: 1234
+        '400':
+          description: Invalid request body
+        '404':
+          description: Report type not found
