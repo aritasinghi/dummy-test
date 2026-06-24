@@ -1,0 +1,188 @@
+/* ─── FrequencyDatePicker ────────────────────────────────────────────────────
+   Teal: #00B9A4   Light teal: #E5F8F6   Text: #232E32   Muted: #6D828A
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* Container */
+.fdp {
+    position: relative;
+    display:  inline-block;
+}
+
+/* ── Input trigger ─────────────────────────────────────────────────────────── */
+.fdp__input {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    gap:             0.5rem;
+    min-width:       160px;
+    padding:         0.375rem 0.625rem;
+    border:          1px solid #ccc;
+    border-radius:   4px;
+    background:      #fff;
+    cursor:          pointer;
+    font-size:       0.875rem;
+    color:           #232E32;
+    transition:      border-color 0.15s;
+}
+.fdp__input:hover,
+.fdp__input--open { border-color: #00B9A4; outline: none; }
+.fdp__input:focus { outline: 2px solid #00B9A4; outline-offset: 1px; }
+.fdp__input--disabled { opacity: 0.5; cursor: not-allowed; }
+
+.fdp__placeholder { color: #aaa; }
+.fdp__value       { color: #232E32; }
+
+.fdp__icon {
+    width:       16px;
+    height:      16px;
+    color:       #6D828A;
+    flex-shrink: 0;
+}
+
+/* ── Popup shared ──────────────────────────────────────────────────────────── */
+.fdp__popup {
+    position:      absolute;
+    top:           calc(100% + 4px);
+    left:          0;
+    z-index:       1000;
+    width:         280px;
+    background:    #fff;
+    border:        1px solid #d8d8d8;
+    border-radius: 8px;
+    box-shadow:    0 4px 16px rgba(0,0,0,0.12);
+    padding:       0.75rem;
+    user-select:   none;
+}
+.fdp__popup--month { width: 230px; }
+
+/* ── Header ────────────────────────────────────────────────────────────────── */
+.fdp__header {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    margin-bottom:   0.625rem;
+}
+.fdp__header-label {
+    font-size:   0.875rem;
+    font-weight: 700;
+    color:       #232E32;
+}
+.fdp__nav {
+    background:  none;
+    border:      none;
+    cursor:      pointer;
+    font-size:   1.25rem;
+    color:       #6D828A;
+    padding:     0 0.25rem;
+    line-height: 1;
+    border-radius: 4px;
+}
+.fdp__nav:hover { color: #00B9A4; background: #E5F8F6; }
+
+/* ── Day grid (DAILY + WEEKLY + YEARLY) ────────────────────────────────────── */
+.fdp__day-grid {
+    display:               grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap:                   1px 0;
+}
+.fdp__day-hdr {
+    font-size:   0.6875rem;
+    font-weight: 600;
+    color:       #6D828A;
+    text-align:  center;
+    padding:     0.125rem 0 0.375rem;
+}
+
+/* Individual day button */
+.fdp__day {
+    aspect-ratio:    1;
+    border:          none;
+    background:      none;
+    cursor:          pointer;
+    font-size:       0.8125rem;
+    color:           #232E32;
+    border-radius:   50%;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    transition:      background 0.1s, color 0.1s;
+}
+.fdp__day:hover         { background: #E5F8F6; }
+.fdp__day--outside      { color: #ccc; pointer-events: none; }
+.fdp__day--today        { border: 1.5px solid #00B9A4; }
+.fdp__day--selected     { background: #00B9A4 !important; color: #fff !important; }
+
+/* ── Week mode: row highlights ─────────────────────────────────────────────── */
+.fdp__day--week {
+    border-radius: 0;        /* flat — rows have rounded ENDS only */
+}
+.fdp__day--week:hover { background: none; }  /* override individual hover */
+
+.fdp__day--week-hover  { background: #E5F8F6; }
+.fdp__day--week-sel    { background: #00B9A4 !important; color: #fff !important; }
+
+/* Round only the leftmost and rightmost cell in the highlighted row */
+.fdp__day--week-first.fdp__day--week-hover,
+.fdp__day--week-first.fdp__day--week-sel  { border-radius: 50% 0 0 50%; }
+.fdp__day--week-last.fdp__day--week-hover,
+.fdp__day--week-last.fdp__day--week-sel   { border-radius: 0 50% 50% 0; }
+
+/* ── Week footer: CLEAR + READY ────────────────────────────────────────────── */
+.fdp__week-footer {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     center;
+    margin-top:      0.625rem;
+    padding-top:     0.5rem;
+    border-top:      1px solid #eee;
+}
+.fdp__footer-btn {
+    background:    none;
+    border:        1px solid #ccc;
+    border-radius: 4px;
+    padding:       0.3125rem 0.875rem;
+    font-size:     0.75rem;
+    font-weight:   700;
+    cursor:        pointer;
+    letter-spacing: 0.03em;
+}
+.fdp__footer-btn--clear {
+    color:        #6D828A;
+    border-color: #ccc;
+}
+.fdp__footer-btn--clear:hover { border-color: #6D828A; color: #232E32; }
+
+.fdp__footer-btn--ready {
+    color:        #00B9A4;
+    border-color: #00B9A4;
+}
+.fdp__footer-btn--ready:hover:not(:disabled) {
+    background: #00B9A4;
+    color:       #fff;
+}
+.fdp__footer-btn--ready:disabled {
+    opacity: 0.4;
+    cursor:  not-allowed;
+}
+
+/* ── Month grid (MONTHLY) ──────────────────────────────────────────────────── */
+.fdp__month-grid {
+    display:               grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:                   0.375rem;
+    margin-top:            0.25rem;
+}
+.fdp__month-btn {
+    padding:       0.5rem 0;
+    border:        1.5px solid transparent;
+    border-radius: 4px;
+    background:    none;
+    cursor:        pointer;
+    font-size:     0.8125rem;
+    color:         #232E32;
+    font-weight:   500;
+    transition:    background 0.1s, color 0.1s, border-color 0.1s;
+}
+.fdp__month-btn:hover            { background: #E5F8F6; border-color: #E5F8F6; }
+.fdp__month-btn--today           { border-color: #00B9A4; }
+.fdp__month-btn--selected        { background: #00B9A4 !important; color: #fff !important; border-color: #00B9A4 !important; }
