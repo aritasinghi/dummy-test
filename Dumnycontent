@@ -1,0 +1,150 @@
+/**
+ * COPILOT: Create a React TypeScript component called FrequencyDatePicker.
+ *
+ * This is a date picker that renders differently based on the `frequency` prop.
+ * It has 3 distinct modes:
+ *
+ * Props:
+ * ──────
+ * interface FrequencyDatePickerProps {
+ *   frequency:  'DAILY' | 'WEEKLY' | 'MONTHLY' | 'YEARLY';
+ *   value:      string;           // YYYY-MM-DD
+ *   onChange:   (value: string) => void;
+ *   placeholder?: string;
+ * }
+ *
+ *
+ * ═══════════════════════════════════════════════════════════════
+ * MODE 1 — DAILY and YEARLY → Standard day picker
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * Render a text input with a calendar icon button.
+ * Placeholder: "Select date"
+ * On click: open a standard month calendar popup.
+ *
+ * Calendar popup layout:
+ *   - Header row: [<] [June 2026] [>]  ← navigate months
+ *   - Weekday row: Su  Mo  Tu  We  Th  Fr  Sa
+ *   - Day grid: 6 rows × 7 columns of day numbers
+ *   - Today: outlined with teal border #00B9A4
+ *   - Hovered day: background #E5F8F6
+ *   - Selected day: background #00B9A4, color white, border-radius 50%
+ *   - Days outside current month: color #ccc
+ *   - No footer buttons
+ *   - Closes on day click, calls onChange with YYYY-MM-DD
+ *
+ *
+ * ═══════════════════════════════════════════════════════════════
+ * MODE 2 — WEEKLY → Week picker (entire row highlights)
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * Render a text input with a calendar icon button.
+ * Placeholder: "Select week"
+ * On click: open a week calendar popup.
+ *
+ * Week calendar popup layout:
+ *   - Header row: [<] [June 2026] [>]  ← navigate months
+ *   - Weekday row: Su  Mo  Tu  We  Th  Fr  Sa
+ *   - Day grid: 6 rows × 7 columns
+ *
+ * Week selection behavior (CRITICAL):
+ *   - When user HOVERS over any day in a row
+ *     → highlight all 7 days in that row: background #E5F8F6
+ *   - When user CLICKS any day in a row
+ *     → entire row becomes selected: background #00B9A4, color white
+ *     → all 7 days in the row are highlighted, not just the clicked day
+ *     → example: clicking "27" highlights [23][24][25][26][27][28][29]
+ *   - Only one week row can be selected at a time
+ *
+ *   Footer buttons (always visible at bottom of popup):
+ *   [ CLEAR ]  ← resets selection to empty, input shows placeholder again
+ *   [ READY ]  ← confirms selection, closes popup
+ *               input displays: Monday of selected week in format "D.M.YYYY"
+ *
+ *   onChange value: ISO date string of the MONDAY of the selected week
+ *   Example: user clicks any day in week 23-29 June → onChange("2026-06-23")
+ *
+ *
+ * ═══════════════════════════════════════════════════════════════
+ * MODE 3 — MONTHLY → Month-only picker (no day selection)
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * Render a text input with a calendar icon button.
+ * Placeholder: "Select month"
+ * On click: open a month grid popup.
+ *
+ * Month picker popup layout:
+ *   - Header row: [<] [2026] [>]  ← navigate YEARS (not months)
+ *   - Month grid (3 columns × 4 rows):
+ *       Jan  Feb  Mar
+ *       Apr  May  Jun
+ *       Jul  Aug  Sep
+ *       Oct  Nov  Dec
+ *   - Current month: teal border #00B9A4
+ *   - Hovered month: background #E5F8F6
+ *   - Selected month: background #00B9A4, color white, border-radius 4px
+ *   - NO day grid shown at all
+ *   - Closes immediately on month click (no READY button needed)
+ *
+ *   onChange value: first day of selected month as YYYY-MM-DD
+ *   Example: user clicks "Oct" in 2026 → onChange("2026-10-01")
+ *   Input displays: "M.YYYY" format, e.g. "10.2026"
+ *
+ *
+ * ═══════════════════════════════════════════════════════════════
+ * SHARED BEHAVIOUR (all modes)
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * - Popup opens BELOW the input, left-aligned
+ * - Popup has: background white, border 1px solid #d8d8d8,
+ *   border-radius 8px, box-shadow, z-index 1000, width 280px
+ * - Click outside popup → close without saving
+ * - ESC key → close without saving
+ * - Input field styling:
+ *     border: 1px solid #ccc
+ *     border-radius: 4px
+ *     padding: 6px 10px
+ *     font-size: 0.875rem
+ *     width: 180px
+ *     cursor: pointer
+ *     display: flex
+ *     align-items: center
+ *     justify-content: space-between
+ *   Calendar icon: right side of input, color #6D828A
+ *   When value is set: show formatted date, color #232E32
+ *   When empty: show placeholder, color #aaa
+ *
+ * Navigation arrows < > :
+ *   color #6D828A, font-size 1rem, cursor pointer, no border
+ *   hover color #00B9A4
+ *
+ *
+ * ═══════════════════════════════════════════════════════════════
+ * USAGE EXAMPLE
+ * ═══════════════════════════════════════════════════════════════
+ *
+ * // Daily — standard day calendar
+ * <FrequencyDatePicker frequency="DAILY" value={date} onChange={setDate} />
+ *
+ * // Weekly — highlights full week row, CLEAR + READY buttons
+ * <FrequencyDatePicker frequency="WEEKLY" value={date} onChange={setDate} />
+ *
+ * // Monthly — month grid only, no days shown
+ * <FrequencyDatePicker frequency="MONTHLY" value={date} onChange={setDate} />
+ *
+ * // Annually — same as daily (standard day calendar)
+ * <FrequencyDatePicker frequency="YEARLY" value={date} onChange={setDate} />
+ */
+
+import React, { useState, useRef, useEffect } from 'react';
+
+const FrequencyDatePicker: React.FC<FrequencyDatePickerProps> = ({
+  frequency,
+  value,
+  onChange,
+  placeholder,
+}) => {
+  // Copilot: implement the component here based on the spec above
+};
+
+export default FrequencyDatePicker;
