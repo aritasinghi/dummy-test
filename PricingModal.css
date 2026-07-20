@@ -1,0 +1,95 @@
+/* ─── PricingModal ────────────────────────────────────────────────────────────
+   Matches Figma: "Report costs and availability"
+   Left: price. Right: availability info. Footer: CANCEL | BACK + ORDER REPORT
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.pm__inner {
+    min-width: 640px;
+    max-width: 800px;
+}
+
+/* Title */
+.pm__title {
+    font-size:   1rem;
+    font-weight: 700;
+    color:       #232E32;
+    margin:      0 0 0.875rem;
+}
+
+.pm__divider {
+    border:     none;
+    border-top: 1px solid #e8e8e8;
+    margin:     0 0 1.5rem;
+}
+
+/* Two-column body */
+.pm__body {
+    display:               grid;
+    grid-template-columns: 1fr 2fr;
+    gap:                   2rem;
+    padding-bottom:        2rem;
+}
+
+/* Left column — costs */
+.pm__col-title {
+    font-size:     0.9375rem;
+    font-weight:   700;
+    color:         #232E32;
+    margin:        0 0 0.875rem;
+}
+
+.pm__price-label {
+    font-size:  0.875rem;
+    color:      #232E32;
+    font-weight: 600;
+    margin:     0;
+}
+
+.pm__price {
+    font-size:   1.75rem;
+    font-weight: 700;
+    color:       #232E32;
+    margin:      0.25rem 0 0.5rem;
+}
+
+.pm__footnote {
+    font-size:  0.75rem;
+    color:      #888;
+    font-style: italic;
+    margin:     0;
+}
+
+/* Right column — availability */
+.pm__text {
+    font-size:   0.875rem;
+    color:       #444;
+    line-height: 1.55;
+    margin:      0;
+}
+
+.pm__text--mt { margin-top: 0.875rem !important; }
+
+/* Error */
+.pm__error {
+    background:    #fff3f3;
+    border:        1px solid #ffcdd2;
+    border-radius: 6px;
+    padding:       0.75rem 1rem;
+    font-size:     0.875rem;
+    color:         #c62828;
+    margin-top:    0.75rem;
+}
+
+/* Footer — CANCEL left, BACK + ORDER REPORT right */
+.pm__footer {
+    display:         flex;
+    justify-content: space-between;
+    align-items:     center;
+    width:           100%;
+}
+
+.pm__footer-left  { display: flex; }
+.pm__footer-right {
+    display: flex;
+    gap:     0.75rem;
+}
