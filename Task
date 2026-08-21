@@ -1,0 +1,35 @@
+Task: Fix postal code validation in ExtractOfOwnersFilterSection.tsx
+The current validation hardcodes postal codes to exactly 5 digits, which incorrectly rejects valid codes from most countries. This project targets Schengen, EU, and Nordic countries, and the "Country of residence/registration" section allows multi-select. Please implement country-aware, multi-country postal code validation as follows.
+1. Create a postal code pattern map (new file postalCodePatterns.ts or top of component):
+Typescript
+2. Update validatePostAddress to accept an array of country codes (multi-select support):
+Typescript
+3. Wire up country selection state:
+When "Select all" (countries) is chosen → pass undefined/empty array to validatePostAddress → uses DEFAULT fallback.
+When "Select the countries" is chosen with one or more countries picked → pass the array of ISO codes (e.g. ["SE", "NL", "PL"]).
+A postal code is valid if it matches any of the selected countries' patterns.
+4. Fix range (From/To) validation:
+Remove all hardcoded length === 5, /^\d{5}$/, or digit-only checks anywhere in the Post Address section (including "Range of post addresses" and single "Post addresses" fields).
+Validate both From and To individually via validatePostAddress(value, countryCodes).
+Only enable "Add to selection" when both From and To pass validation.
+Handle the case where From and To might match different countries' formats within the same selected set — this should still be considered valid as long as each individually matches at least one selected country's pattern.
+Handle edge cases: empty string, whitespace-only input, leading/trailing spaces (trim before validating), lowercase letters in alphanumeric codes (e.g. Latvia/Lithuania/Malta — validation should be case-insensitive).
+5. Update error/help messages dynamically:
+Single country selected: show format hint, e.g. "Format: 1234 AB (Netherlands)".
+Multiple countries selected: on failure, show "This postal code doesn't match any of the selected countries' formats."
+No country selected (Select all): "Enter a valid postal code."
+Keep the existing "Add at least one postal code range" message for the empty-range case, but remove any message implying a fixed digit count.
+6. Regression check:
+Search the whole file (and any shared validation utils it imports) for other places that assume 5-digit postal codes and update them consistently.
+Confirm no other component reuses the old single-string signature of validatePostAddress — update all call sites to pass an array.
+7. Add/update unit tests covering:
+Sweden: 123 45 (valid), 12345 (invalid — needs space per pattern, confirm intended strictness)
+Netherlands: 1234 AB (valid), 1234AB (valid per pattern), 12345 (invalid)
+Poland: 12-345 (valid), 12345 (invalid per pattern, confirm intended strictness)
+Finland: 12345 (valid)
+Latvia: LV-1010 and lv1010 (both valid, case-insensitive)
+Malta: ABC 1234 (valid)
+Multi-country selection ["SE", "NL", "PL"]: code 1234 AB valid (matches NL), code ABCDE invalid (matches none)
+No country selected: generic alphanumeric 2–10 chars accepted, e.g. AB123
+Empty/whitespace input: invalid
+Run npm run lint after changes and fix any resulting lint errors.
