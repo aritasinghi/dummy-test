@@ -1,0 +1,4 @@
+"Refine the persistence logic:
+Role and organization must persist independently across page reloads via localStorage/sessionStorage.
+Clearing/deselecting the organization dropdown must only clear the organization value — it must NOT reset or clear the selected role.
+When the role itself changes (e.g. Issuer Admin → EFI Admin), navigate to that role's dedicated URL (already implemented in RoleSwitcher.tsx), and ensure the organization/second-dropdown state resets appropriately for the new role context rather than carrying over stale data from the previous role."
