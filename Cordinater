@@ -1,0 +1,67 @@
+# Agent Guidelines for `information-elements`
+
+## Repository overview
+Monorepo for the Information Elements application:
+- `ife-gui`: React 19 + TypeScript frontend (Vite, Vitest, ESLint)
+- `ife-service`: Spring Boot 4.1.x / Java 21 backend (Maven, JPA, Liquibase, OpenAPI generation, PostgreSQL)
+
+Default branch is `develop`. Feature branches are created from `develop` manually.
+
+## Role
+Act as a senior full-stack engineer. Prefer the simplest correct solution. Java 21 now, possibly 25 later: avoid deprecated APIs and use modern Java where it fits (records, switch expressions, pattern matching).
+
+## Before changing any file
+1. Find the root cause, not just the symptom.
+2. Check what else uses this code (callers, APIs, DB, UI).
+3. Confirm the change won't break existing functionality.
+4. Make the smallest safe change. No unrelated refactors or formatting churn.
+5. Keep frontend and backend separate unless the task crosses both.
+6. Preserve existing style, naming, and public APIs.
+7. If unsure, inspect the files or ask before editing.
+
+## Code style
+- Clean, readable, human-style code. No over-engineering.
+- Short comments only where the "why" isn't obvious.
+- Each REST endpoint gets a brief Javadoc or OpenAPI description (purpose, request, response, errors).
+
+## Commands
+Frontend (`ife-gui`): `npm run lint`, `npm run test`, `npm run build`, `npm run i18n:check`
+Backend (`ife-service`): `./mvnw test`, `./mvnw clean package`
+
+## After changing code
+- Run the most targeted lint/test/build for the area changed. Run the full set for shared or risky changes.
+- Add or update tests for each change (happy path and edge cases).
+- Frontend: if UI text changes, keep i18n keys in parity (`npm run i18n:check`).
+- Backend: if API contracts change, check the OpenAPI-generated code. If entities change, add a new Liquibase changeset (PostgreSQL). Never edit an already applied changeset.
+- Fix all failures. Never skip or delete tests to make them pass.
+
+## Security (deploys to SDG)
+- Check for OWASP Top 10 issues: injection, broken auth, XSS, sensitive data exposure.
+- Validate input. Use parameterized queries. Never log secrets or personal data.
+- On dependency changes, run `npm audit` and report high/critical findings with the fix.
+- Prefer patched versions. Flag major upgrades instead of forcing them.
+
+## Documentation
+- Small changes: no doc files, just a short summary in chat.
+- Major changes (new feature/API, schema or architecture change): one concise doc, max one page.
+- Never bulk-generate docs.
+
+## Never touch
+- `.env`, `.env.*`, `application*.yml`, `application*.properties`, `bootstrap.*`
+- Any file with passwords, keys, tokens, or connection strings
+- CI/CD config, Dockerfiles, Kubernetes manifests, unless explicitly asked
+
+Never print, copy, or hardcode secrets. If a config change seems needed, tell me.
+
+## Multi-task requests
+- Make a numbered checklist first and finish every task without stopping to ask between them.
+- At the end, list each task as done, partial, or not done. Never skip silently.
+
+## Safety
+- Don't commit, push, or create branches. I handle all git operations myself.
+- No destructive commands (delete, force push, DB drops) without approval.
+- No new dependencies without explaining why.
+
+## Notes
+- The README references Playwright as the primary end-to-end test framework.
+- Keep any new guidance in this file short and actionable.
