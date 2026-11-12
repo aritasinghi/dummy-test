@@ -1,0 +1,55 @@
+You are helping me implement report options for the IFE (shareholder ownership reporting) front end. The spec below comes from the INTERNAL service description (ISD) v0.7 MVP.
+
+FIRST: inspect the existing codebase. Find how reports, variants, filters and column visibility are currently modelled (report/variant enums, report definitions, UI option panels, PDF/export generation). Reuse existing patterns. Don't hardcode per-report if config can drive it. Summarise your findings and proposed design before changing code.
+
+## Terminology
+Reports: Issuer Ownership Report (IOR), Public Ownership Report (POR), Temporary Shareholder List (TSL), Extract of Owners (EoO), Major Owners (MO).
+Variants: Full owner list, Issuer's shareholder list, Regulatory, General Meeting, Public, Full.
+EoO has no variants (blank in spec). MO uses the variant "Full".
+
+## A. SHOW DATA CHECKBOXES
+Format: Functionality | Default | Availability (Report: variants) | Behaviour
+
+1. Address information subject to non-disclosure | Unchecked (No)
+   IOR: Full owner list, Issuer's shareholder list | TSL: Full owner list, Regulatory | EoO | MO: Full
+   Behaviour: in EoO the WHOLE owner row disappears for owners under "non-disclosure". In all other reports only the address (and the icon in the GUI) disappears for those owners. "Non-disclosure" means non-disclosure to all owners.
+2. Identification code | Checked (Yes)
+   IOR: Full owner list, Issuer's shareholder list | TSL: Full owner list, Regulatory | EoO | MO: Full
+3. Sector information | Checked (Yes)
+   IOR: Full owner list | TSL: Full owner list | EoO | MO: Full
+4. Depository participant | Checked (Yes)
+   IOR: Full owner list | TSL: Full owner list | EoO | MO: Full
+5. Total shares | Unchecked (No)
+   IOR: Issuer's shareholder list, General Meeting | POR: Public | TSL: Regulatory, General Meeting
+   Behaviour: hides both Grand Total and Sub totals inside the cell, with all numbers related to it, in the application and in the PDF.
+6. % of book-entries | Unchecked (No)
+   Same availability as Total shares. Behaviour: hides the whole column.
+7. Total number of votes | Unchecked (No)
+   IOR: Issuer's shareholder list, General Meeting | TSL: Regulatory, General Meeting. Behaviour: hides the whole column.
+8. % of total number of votes | Unchecked (No)
+   Same availability as Total number of votes. Behaviour: hides the whole column.
+
+## B. FILTERS
+9. Directly-registered holdings | Default: Included
+   IOR: Full owner list | POR: Full | TSL: Full | EoO | MO: Full
+10. Nominee-registered holdings | Default: Included
+    IOR: Full owner list | POR: Full | TSL: Full | EoO | MO: Full
+11. Sector | Default: All Sectors (L2)
+    IOR: Full owner list | TSL: Full | EoO | MO: Full
+    Behaviour: the sector filter works on Level 2.
+
+## C. SORT
+12. Three sort options in the Issuer Ownership Report and its "relatives": By Owner, By Number of Shares, By Number of Votes. Default: By Owner, Ascending.
+    Applies to all reports and variants. Sort works only where the sortable column is available in that report and variant (e.g. no "By Number of Votes" if the votes column is hidden or absent).
+
+## D. SEARCH
+TBD in the spec. Do NOT implement; leave a clearly marked extension point.
+
+## Requirements
+- Model the table above as one declarative configuration (feature -> default -> {report: [variants]}). The UI must show a checkbox/filter only for the current report + variant combination. Defaults must be applied when the report opens.
+- Hiding behaviour (row, address and icon, totals, whole column) must be consistent between the GUI and PDF output.
+- Sort options must depend on which columns are visible/available.
+- Add unit tests for: availability per report/variant, defaults, each hiding behaviour (especially the EoO whole-row vs other-reports address-only difference), and the sort-availability rule.
+- Don't change unrelated behaviour. List any ambiguities or assumptions at the end instead of guessing silently.
+
+Deliver: 1) the design summary, 2) the code changes, 3) the tests, 4) a list of open questions.
