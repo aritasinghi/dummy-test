@@ -1,0 +1,136 @@
+## PART A: EXISTING WORK (READ FIRST)
+An earlier, less complete version of this task was already given to you, and some changes are already in the code. Some are correct, some are incomplete, and at least one is wrong (the address column is currently being hidden, which must not happen).
+
+DO NOT redo or rewrite anything that already works. Don't rename, restructure or reformat code that is already correct. Keep diffs minimal and reuse the existing config, helpers and components.
+
+Do this, in order:
+1. AUDIT. Inspect the current code and compare it against EVERY case in this prompt, for each (report, report type): the visible radios, the visible checkboxes, the visible filters, the defaults, and the behaviours in section 5. For each case, record one status: CORRECT (leave it alone), MISSING (add it), or WRONG (fix it).
+2. Print the audit as a table BEFORE changing any code.
+3. Then change ONLY the MISSING and WRONG items.
+4. In your final summary, list what you left untouched, what you added and what you fixed.
+
+Items already known to be wrong or likely missing; confirm each in the audit:
+ - The "Address information subject to non-disclosure" checkbox hides the whole address column. WRONG, see 5.1.
+ - Checkbox defaults were set to "all checked". Probably WRONG, see section 4.
+ - "General government" filter chip. Likely MISSING.
+ - TSL Regulatory/Public/General meeting may still show a Filtering section. Filtering must be visible ONLY for TSL Full.
+ - Combined and Total sub-row hiding for TSL Total shares. Likely MISSING, see 5.2.
+ - Anything else in this prompt that the audit finds missing or different.
+
+## PART B: SPECIFICATION
+
+You are helping me implement the "Report type / Show details / Filtering" panel logic for the IFE (shareholder ownership reporting) front end. Sources: INTERNAL service description (ISD) v0.7 MVP and the Figma file "Concept of Information Elements". Where they disagree, the decisions below apply.
+
+## 0. How to work
+- The Issuer Ownership Report (IOR) is already implemented. Use it as the reference pattern and do not regress it.
+- The target design is ONE declarative config plus pure functions, with no per-report if/else in components. If a config already exists from the earlier work, extend it instead of creating a second one.
+- Column rendering, search and download are out of scope except where this prompt says otherwise. Column hiding for the checkboxes is already implemented; verify it, don't rewrite it.
+- Mark every assumption with a TODO comment and list them at the end.
+
+## 1. Reports and report types (radio buttons)
+Report types are the "variants". ISD "Full owner list" = Figma "Full".
+- Public Shareholder List (PSL): Full | Public shareholder list
+- Temporary Shareholder List (TSL): Full | Regulatory | Public | General meeting
+- Issuer Ownership Report (IOR): Issuer's shareholder list | Full | General meeting | Short   (the default selection is Full, as in Figma)
+- Major Owners (MO): Full | Public
+- Extract of Owners (EoO): NO report-type section at all
+Default selected radio: Full wherever it exists.
+
+## 2. Panel content per (report, report type)
+
+Checkbox sets
+ CB4 = Address information subject to non-disclosure, Identification code, Sector information, Depository participant
+ CB_REG = Address information subject to non-disclosure, Identification code, Depository participant, Total shares, % of book-entries, Total number of votes, % of total number of votes
+ CB_GM = Number of book-entries combined, Percentage of book-entries combined, Number of votes combined, Percentage of total voting rights
+   (assumption: same four fields as ISD "Total shares / % of book-entries / Total number of votes / % of total number of votes" for the General meeting variant; keep the Figma labels)
+ CB_EOO = Address information subject to non-disclosure, Identification code, Discontinued book-entry types, Lowest-level sector classification, Depository participant
+Filter sets
+ F2 = Directly-registered holdings, Nominee-registered holdings
+ F6 = Directly-registered holdings, Nominee-registered holdings, Companies, Financial and insurance institutions, General government, Households   (General government is NEW and must be added)
+ F3_TSL = Directly-registered holdings, Nominee-registered holdings, Sector classification
+
+Matrix
+ PSL / Full ........................ checkboxes: none | filters: F2
+ PSL / Public shareholder list ..... none | none
+ TSL / Full ........................ CB4 | F3_TSL
+ TSL / Regulatory .................. CB_REG | none   (Filtering is visible ONLY for TSL Full)
+ TSL / Public ...................... none | none
+ TSL / General meeting ............. CB_GM | none
+ IOR / Full ........................ CB4 | F6
+ IOR / Issuer's shareholder list ... existing behaviour; ISD-expected: Address, Identification code + Total shares, % of book-entries, Total number of votes, % of total number of votes | no filters
+ IOR / General meeting ............. existing behaviour; ISD-expected: the 4 totals/votes checkboxes | no filters
+ IOR / Short ....................... existing behaviour; ISD-expected: none | none
+ MO / Full ......................... CB4 | F6
+ MO / Public ....................... none | none   (ASSUMPTION: no Figma screen; same as PSL Public)
+ EoO ............................... CB_EOO | F6
+For the IOR variants other than Full (not in Figma), VERIFY the existing code against the ISD-expected values and REPORT any mismatch. Don't silently change them.
+Filters other than Directly/Nominee registered appear only where the matrix says so.
+
+## 3. Visibility rules
+R1. Render a section (heading plus items) only if it has at least one item for the current (report, type). No checkboxes means no "Show details" section. No filters means no "Filtering" section.
+R2. Switching the radio re-evaluates the panel. Items that are not visible must not affect the data or the active filters. Newly visible items start at their defaults. If the IOR already has a rule for carrying or resetting state on switch, keep it for all reports.
+R3. Results label: when the Filtering section is visible it reads "With filtering: owners N, holdings M" (EoO: "With filtered: owners N, book-entries M"). When it is hidden it reads "Owners N, holdings M". Keep the existing wording and localisation.
+
+## 4. Defaults (ISD v0.7)
+Checkboxes (add a defaultChecked field per item if it doesn't exist):
+  Address information subject to non-disclosure: UNCHECKED
+  Identification code: checked
+  Sector information: checked
+  Depository participant: checked
+  Total shares, % of book-entries, Total number of votes, % of total number of votes, and the General meeting equivalents (CB_GM): UNCHECKED
+  Discontinued book-entry types, Lowest-level sector classification (EoO): checked (no ISD default, so add a TODO)
+If the existing IOR uses different defaults, do NOT change it silently. List the mismatch.
+Filters: all chips selected by default (Directly-registered and Nominee-registered = "Included"; sector chips = "All sectors"). A chip shows its count badge. Deselected (grey) means that group is excluded from the table, the counts and the results label.
+
+## 5. Behaviour of each checkbox
+
+5.1 Address information subject to non-disclosure (CRITICAL)
+- It must NEVER hide the address column. The address column (street address, postal code/place, country) is controlled only by the existing report/type column configuration. It stays visible whatever the checkbox state. Remove any logic that toggles column visibility from this checkbox.
+- It only masks data per owner, using the per-owner non-disclosure flag already in the API response (find the real field name in the API model; do not invent one).
+  * Unchecked (default): for owners whose flag is true, render NO address values and NO non-disclosure icon. The address cell stays empty. Owners with flag false are unaffected.
+  * Checked: show everything as the API returns it, including the non-disclosure icon.
+  * Extract of Owners only: when unchecked, the WHOLE owner row is removed for owners with flag true, not only the address.
+- Masked data must not be rendered at all. CSS hiding is not allowed. The same logic must apply to the PDF/export.
+- In a report/type where this checkbox is not offered, leave current behaviour unchanged and add a TODO.
+- ASSUMPTION to confirm: unchecked = mask, checked = reveal. Keep the direction in a single constant so it can be flipped in one place.
+
+5.2 Total shares: Combined and Total rows (Temporary Shareholder List ONLY)
+- Each owner's holdings render as stacked sub-rows, for example: EUROFLEX A, EUROFLEX B, "EUROFLEX A Combined" (sub-total), "Total" (grand total).
+- Applies ONLY to the TSL, for the checkbox that maps to Total shares: "Total shares" in Regulatory, and "Number of book-entries combined" in General meeting (assumption, add a TODO).
+- Checked: show the Combined and Total sub-rows with their numbers.
+- Unchecked: remove EVERY Combined and Total sub-row for EVERY owner, as whole rows across ALL cells they span: book-entry name/ISIN, depository participant alignment, number of book-entries and % of book-entries. Don't just blank the numbers. The remaining rows must stay vertically aligned. Preferred approach: model each owner's holdings as an array of rows with a kind (entry | combined | total) and filter it once.
+- Same behaviour in GUI and PDF.
+- No other report is affected: not IOR, PSL, MO or EoO, and not TSL Full/Public, which have no such checkbox. This rule runs only when the current TSL report type offers that checkbox.
+
+5.3 Column-hiding checkboxes (already implemented, verify only)
+ - Identification code, Sector information, Depository participant: show or hide the related field/column.
+ - % of book-entries, Total number of votes, % of total number of votes: hide the whole column. These are per-owner single values and are not affected by 5.2.
+ - Total shares in reports other than the TSL (IOR, Public Ownership Report): hides both the Grand Total and Sub totals inside the cell, with all numbers related to it, in the application and in the PDF. Keep the existing behaviour.
+
+## 6. Sort (existing, verify only)
+In the IOR and its "relatives" there are three sort options: By Owner, By Number of Shares, By Number of Votes. Default: By Owner, Ascending. Sort applies to all reports and variants, but only where the sortable column exists for that report/variant. So don't offer a sort whose column is hidden or absent (for example, no "By Number of Votes" when the votes column is hidden).
+
+## 7. Search
+TBD in the ISD. Don't implement it. Keep the existing "Search owner by name" box unchanged.
+
+## 8. Known Figma vs ISD discrepancies (implement as decided here, TODO at each place)
+ a. TSL Regulatory shows "Depository participant" in Figma; ISD says only the Full owner list. Decision: follow Figma.
+ b. ISD lists Total shares and % of book-entries for the Public Ownership Report (Public); the product owner wants NO checkboxes or filters in PSL Public or TSL Public. Decision: follow the product owner.
+ c. EoO: Figma has "Discontinued book-entry types" and "Lowest-level sector classification", which are not in the ISD (it has "Sector information"). Decision: follow Figma.
+ d. ISD has one "Sector (L2)" filter; Figma shows four sector chips (F6) and, for TSL, a single "Sector classification" chip. Decision: follow Figma.
+ e. Figma shows all checkboxes checked; ISD defaults are as in section 4. Decision: follow the ISD.
+ f. The ISD note for "Address information subject to non-disclosure" (whole row disappears in EoO) is applied as in 5.1.
+
+## 9. Implementation requirements
+- Typed config: reportId -> reportTypeId -> { checkboxes: [{id, label, defaultChecked}], filters: [{id, label, defaultSelected}] }, plus pure functions getPanelConfig(report, reportType), maskOwner(...), filterHoldingRows(...). The UI only consumes these. Reuse the existing equivalents where they already exist.
+- Add the "General government" chip with count, handled exactly like the other sector chips (filtering, counts, default selected).
+- Unit tests (add only the ones that are missing; keep the existing ones that still pass):
+  * For every (report, type) in the matrix, assert the exact checkbox and filter lists. Include TSL Full (checkboxes plus filters) versus TSL Regulatory (checkboxes only, no Filtering section).
+  * R1 (empty sections not rendered), R2 (switching types), R3 (label variants), EoO has no radios, MO and PSL radio sets.
+  * Defaults match section 4.
+  * Address column is rendered in both checkbox states. Masking works as in 5.1 (flag true/false, icon, EoO whole-row removal).
+  * TSL Regulatory: Total shares unchecked removes all Combined and Total sub-rows in every cell and keeps the alignment. Checked shows them. Other reports are unaffected.
+  * IOR regression: existing behaviour unchanged.
+
+## 10. Deliver
+1) The audit table (Part A), 2) a summary of what you left as is, what you added and what you fixed, 3) the code changes, 4) the tests, 5) a list of assumptions and open questions, including any mismatch between the existing IOR and the ISD-expected values.
